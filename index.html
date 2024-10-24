@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>QFS Wallet</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #001f54;
+      color: white;
+      text-align: center;
+      animation: fadeIn 2s ease-in;
+      font-size: 24px; /* Increased base font size */
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .container {
+      max-width: 1200px; /* Maximum width */
+      margin: 0 auto;
+      padding: 20px; /* Adjusted padding for mobile */
+      animation: slideUp 1.5s ease-in-out;
+      overflow: hidden; /* Ensure no overflow */
+    }
+
+    @keyframes slideUp {
+      0% { transform: translateY(100px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    header h1 {
+      font-size: 4rem; /* Reduced title font size */
+      margin-bottom: 10px;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(0, 0, 255, 0.8);
+    }
+
+    header h2 {
+      font-size: 2rem; /* Reduced subtitle font size */
+      margin-bottom: 20px;
+    }
+
+    .balance {
+      display: flex;
+      flex-direction: column; /* Stack on mobile */
+      justify-content: center;
+      align-items: center; /* Center align on mobile */
+      margin-bottom: 40px;
+      gap: 15px; /* Space between balance boxes */
+    }
+
+    .balance-box, .status-box {
+      background: linear-gradient(145deg, #00448f, #007bff);
+      padding: 15px; /* Adjust padding for smaller screens */
+      border-radius: 15px; /* Increased border-radius */
+      width: 90%; /* Make boxes responsive */
+      max-width: 400px; /* Limit max width */
+      box-shadow: 0 6px 20px rgba(0, 0, 255, 0.6);
+      transition: transform 0.3s ease;
+      user-select: none; /* Prevent text selection when blurred */
+    }
+
+    .balance-box:hover, .status-box:hover {
+      transform: scale(1.05); /* More pronounced hover effect */
+    }
+
+    .balance-box h3, .status-box h3 {
+      font-size: 1.6rem; /* Reduced section title size */
+      color: #d4f1ff;
+    }
+
+    .balance-box p {
+      font-size: 2.5rem; /* Reduced balance size */
+    }
+
+    .confirmed {
+      color: lime;
+      font-weight: bold;
+      font-size: 1.8rem; /* Adjusted confirmation status */
+    }
+
+    .tasks {
+      background-color: #00448f;
+      padding: 15px; /* Adjusted padding for mobile */
+      border-radius: 15px;
+      margin-bottom: 40px;
+      box-shadow: 0 6px 20px rgba(0, 0, 255, 0.6);
+      animation: pulse 1s infinite;
+      width: 90%; /* Make tasks section responsive */
+      max-width: 400px; /* Limit max width */
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .cashout-options h3 {
+      font-size: 1.6rem; /* Larger cash-out header */
+      margin-bottom: 20px;
+    }
+
+    .cashout-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px; /* Adjusted button size */
+      font-size: 1.4rem; /* Adjusted font size */
+      border: none;
+      border-radius: 10px; /* Rounded the buttons more */
+      margin: 10px 0; /* Margin for spacing */
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      width: 90%; /* Responsive button width */
+      max-width: 300px; /* Limit max button width */
+    }
+
+    .cashout-btn:hover {
+      background-color: #00448f;
+      box-shadow: 0 0 20px #00ffcc;
+    }
+
+    footer {
+      margin-top: 20px;
+    }
+
+    .success {
+      color: lime;
+      font-size: 1.5rem; /* Adjusted success message size */
+      animation: blink 1s infinite alternate;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+
+    footer small {
+      display: block;
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    .get-in-touch {
+      margin-top: 20px;
+      font-size: 1.6rem; /* Adjusted font size for "GET IN TOUCH" */
+      color: #fff;
+      background: linear-gradient(145deg, #00448f, #007bff);
+      padding: 15px; /* Adjusted padding for mobile */
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 255, 0.6);
+      transition: transform 0.3s ease;
+      animation: fadeIn 1.5s ease-in; /* Animation for the touch section */
+      width: 90%; /* Make it responsive */
+      max-width: 400px; /* Limit max width */
+    }
+
+    .get-in-touch h3 {
+      font-size: 1.8rem; /* Header size */
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(0, 255, 0, 0.7); /* Text shadow for emphasis */
+    }
+
+    .email-link {
+      color: #00ffcc; /* Distinct color for the email link */
+      font-weight: bold;
+      font-size: 1.6rem; /* Adjusted email font size */
+      text-decoration: none; /* Remove underline */
+      margin-top: 10px; /* Space above the email link */
+      display: inline-block; /* Allow margin to take effect */
+      transition: color 0.3s;
+    }
+
+    .email-link:hover {
+      color: #00cc99; /* Change color on hover */
+    }
+
+    .scroll-down {
+      display: none; /* Hidden by default */
+      margin: 20px 0;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .scroll-icon {
+      font-size: 3rem; /* Adjust scroll icon size */
+      color: #d4f1ff; /* Icon color */
+    }
+
+    /* Responsive design adjustments */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 3rem; /* Smaller title on mobile */
+      }
+
+      header h2 {
+        font-size: 1.6rem; /* Smaller subtitle on mobile */
+      }
+
+      .cashout-btn {
+        font-size: 1.2rem; /* Smaller button font size on mobile */
+      }
+
+      .balance-box h3, .status-box h3 {
+        font-size: 1.4rem; /* Smaller section title size */
+      }
+
+      .balance-box p {
+        font-size: 2rem; /* Smaller balance size */
+      }
+
+      .email-link {
+        font-size: 1.4rem; /* Adjusted email font size for mobile */
+      }
+    }
+
+    /* Styles for tablet and larger devices */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      header h1 {
+        font-size: 3.5rem; /* Adjusted size for tablet */
+      }
+
+      header h2 {
+        font-size: 1.8rem; /* Adjusted size for tablet */
+      }
+
+      .balance-box h3, .status-box h3 {
+        font-size: 1.5rem; /* Adjusted size for tablet */
+      }
+
+      .balance-box p {
+        font-size: 2.3rem; /* Adjusted size for tablet */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>PERSONAL QFS WALLET</h1>
+      <h2>Welcome back!</h2>
+    </header>
+    
+    <section class="balance">
+      <div class="balance-box">
+        <h3>Total Balance</h3>
+        <p>*****</p> <!-- Displayed as blurred -->
+      </div>
+      <div class="status-box">
+        <h3>Status</h3>
+        <p class="confirmed">Confirmed</p>
+      </div>
+    </section>
+    
+    <div class="tasks">
+      <h3>Your Tasks</h3>
+      <p>Review your transactions.</p>
+      <p>Check for pending actions.</p>
+    </div>
+
+    <div class="cashout-options">
+      <h3>Cash-out Options</h3>
+      <button class="cashout-btn">Cash-out to Bank</button>
+      <button class="cashout-btn">Cash-out to Wallet</button>
+      <button class="cashout-btn">View Cash-out History</button>
+    </div>
+
+    <div class="get-in-touch">
+      <h3>GET IN TOUCH</h3>
+      <a href="mailto:claudiawarnertrb@gmail.com" class="email-link">claudiawarnertrb@gmail.com</a>
+    </div>
+
+    <footer>
+      <p class="success">Your cash-out request is being processed!</p>
+      <small>&copy; 2024 QFS Wallet. All rights reserved.</small>
+    </footer>
+  </div>
+
+  <div class="scroll-down">
+    <span class="scroll-icon"></span>
+  </div>
+</body>
+</html>
